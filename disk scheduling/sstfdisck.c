@@ -49,5 +49,4 @@ int main()
 
       printf("The seek time is: %d",seek);
       return 0;
-
 }
