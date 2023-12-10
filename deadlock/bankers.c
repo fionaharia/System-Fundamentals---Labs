@@ -5,18 +5,19 @@ int main()
       int p,r,i,j,cnt=0;
       int alloc[10][10],max[10][10],need[10][10], safe[10], available[10], done[10];
       int terminate = 0;
-      printf("Enter the number of proccesses and resources:  ");
+      printf("Enter the number of proccesses and resources: ");
       scanf("%d %d",&p,&r);
-      printf("Enter the allocation matrix of all processes in a %d x %d matrix",p,r);
+      printf("Enter the allocation matrix of all processes in a %d x %d matrix\n",p,r);
       for(i=0;i<p;i++)
       {
             for(j=0;j<r;j++)
             {
                   scanf("%d",alloc[i][j]);
             }
+            printf("\n");
       }
 
-      printf("Enter the maximum resources matric of all processes in a %d x %d matrix",p,r);
+      printf("Enter the maximum resources matric of all processes in a %d x %d matrix\n",p,r);
       for(i=0;i<p;i++)
       {
             for(j=0;j<r;j++)
@@ -41,37 +42,62 @@ int main()
       }
 
       for(i=0;i<p;i++)
-      done[i] = 0;
+      done[i] = 0; //keeping track of what proccess are done
 
-      while(cnt<p)
+      while(cnt<p) //iterating till all the process are completed
       {
-            for(i=0;i<p;i++)
+            for(i=0;i<p;i++) //iterating through all processes
             {
-                  if(done[i]==0)
+                  if(done[i]==0) //that particular process isn't completed 
                   {
-                        for(j=0;j<r;j++)
+                        for(j=0;j<r;j++)  //iterating through the resources
                         {
-                              if(need[i][j] > available[j])
-                              break;
+                              if(need[i][j]>available[j]) //wont check further if this statement is true, it will come out of the loop
+                                    break;
                         }
 
-                        //it confirms that it has iterated through all of the resources for that process
-                        if(j==r)
+                        if(j==r) //process can be allocated since j==r
                         {
-                              safe[cnt] = i;
-                              done[i] = 1;
+                              safe[cnt] = i; //i indicated process number
+                              done[i] = 1; //updating the completion of ith process
+
                               for(j=0;j<r;j++)
                               {
-                                    available[j]+=alloc[i][j];
+                                    available[j]+=alloc[i][j]; //releasing the allocated resources
                               }
 
-                              cnt++;
-                              terminate = 0;
+                              cnt++; //incrementing counter since process is done
+                              terminate=0;
                         }
                         else
+                        {
                               terminate++;
+                        }
                   }
             }
+
+            if(terminate==(p-1)) //this means all proccesses except one has been checked and none can be executed
+            {
+                  printf("Safe sequence doesnt exist");
+                  break;
+            }
       }
+
+      if(terminate!=(p-1))
+      {
+            printf("The available resources after completetion are: \n");
+            for(i=0;i<r;i++)
+            {
+                  printf("%d\t",available[i]);
+            }
+
+            printf("\nThe safe sequence is: \n");
+            for(i=0;i<p;i++)
+            {
+                  printf("P%d->\t",safe[i]);
+            }
+      }
+
+      return 0;
 
 }
