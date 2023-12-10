@@ -2,6 +2,7 @@
 void best_fit(int block[],int process[],int bc, int pc)
 {
       int allocation[pc];
+      int fragmentation[pc];
       int i,j,bst;
       for(i=0;i<pc;i++)
       {
@@ -10,6 +11,7 @@ void best_fit(int block[],int process[],int bc, int pc)
             {
                   if(block[j]>=process[i])
                   {
+                        //if no blockis aasigned yet or the current block is a better fit than bst
                         if(bst==-1 || (block[bst]>block[j]))
                         {
                               bst = j;
@@ -19,6 +21,7 @@ void best_fit(int block[],int process[],int bc, int pc)
             if(bst!=-1)
             {
                   allocation[i] = bst;
+                  fragmentation[i] = block[bst] - process[i];
                   block[bst] -= process[i];
             }
       }
@@ -26,7 +29,8 @@ void best_fit(int block[],int process[],int bc, int pc)
       printf("Process No.   Process Size\t Fragment\tBlock No.\n");
       for(i=0;i<pc;i++)
       {
-            printf("%d\t\t%d\t\t%d\t\t",i+1,process[i],block[i]);
+            printf("%d\t\t%d\t\t%d\t\t",i+1,process[i],fragmentation[i]);
+            //-1 is a garbage value. here block number cant be number therefore
             if(allocation[i] != (-1))
             {
                   printf("%d\n",allocation[i]+1);
